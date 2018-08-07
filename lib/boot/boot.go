@@ -4,19 +4,19 @@ package boot
 import (
 	"log"
 
-	"github.com/blue-jay/blueprint/controller"
-	"github.com/blue-jay/blueprint/lib/env"
-	"github.com/blue-jay/blueprint/lib/flight"
-	"github.com/blue-jay/blueprint/viewfunc/link"
-	"github.com/blue-jay/blueprint/viewfunc/noescape"
-	"github.com/blue-jay/blueprint/viewfunc/prettytime"
-	"github.com/blue-jay/blueprint/viewmodify/authlevel"
-	"github.com/blue-jay/blueprint/viewmodify/flash"
-	"github.com/blue-jay/blueprint/viewmodify/uri"
+	"github.com/blue-jay-fork/blueprint/controller"
+	"github.com/blue-jay-fork/blueprint/lib/env"
+	"github.com/blue-jay-fork/blueprint/lib/flight"
+	"github.com/blue-jay-fork/blueprint/viewfunc/link"
+	"github.com/blue-jay-fork/blueprint/viewfunc/noescape"
+	"github.com/blue-jay-fork/blueprint/viewfunc/prettytime"
+	"github.com/blue-jay-fork/blueprint/viewmodify/authlevel"
+	"github.com/blue-jay-fork/blueprint/viewmodify/flash"
+	"github.com/blue-jay-fork/blueprint/viewmodify/uri"
 
-	"github.com/blue-jay/core/form"
-	"github.com/blue-jay/core/pagination"
-	"github.com/blue-jay/core/xsrf"
+	"github.com/blue-jay-fork/core/form"
+	"github.com/blue-jay-fork/core/pagination"
+	"github.com/blue-jay-fork/core/xsrf"
 )
 
 // RegisterServices sets up all the web components.

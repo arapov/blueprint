@@ -5,13 +5,13 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/blue-jay/blueprint/lib/flight"
-	"github.com/blue-jay/blueprint/middleware/acl"
-	"github.com/blue-jay/blueprint/model/user"
+	"github.com/blue-jay-fork/blueprint/lib/flight"
+	"github.com/blue-jay-fork/blueprint/middleware/acl"
+	"github.com/blue-jay-fork/blueprint/model/user"
 
-	"github.com/blue-jay/core/form"
-	"github.com/blue-jay/core/passhash"
-	"github.com/blue-jay/core/router"
+	"github.com/blue-jay-fork/core/form"
+	"github.com/blue-jay-fork/core/passhash"
+	"github.com/blue-jay-fork/core/router"
 )
 
 // Load the routes.

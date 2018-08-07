@@ -3,7 +3,7 @@ package flight
 import (
 	"sync"
 
-	"github.com/blue-jay/core/xsrf"
+	"github.com/blue-jay-fork/core/xsrf"
 )
 
 var (

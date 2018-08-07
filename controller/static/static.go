@@ -6,10 +6,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/blue-jay/blueprint/controller/status"
-	"github.com/blue-jay/blueprint/lib/flight"
+	"github.com/blue-jay-fork/blueprint/controller/status"
+	"github.com/blue-jay-fork/blueprint/lib/flight"
 
-	"github.com/blue-jay/core/router"
+	"github.com/blue-jay-fork/core/router"
 )
 
 // Load the routes.

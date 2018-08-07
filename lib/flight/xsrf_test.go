@@ -5,8 +5,8 @@ import (
 	"log"
 	"testing"
 
-	"github.com/blue-jay/blueprint/lib/flight"
-	"github.com/blue-jay/core/xsrf"
+	"github.com/blue-jay-fork/blueprint/lib/flight"
+	"github.com/blue-jay-fork/core/xsrf"
 )
 
 // TestRace tests for race conditions.

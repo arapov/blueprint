@@ -4,15 +4,15 @@ package env
 import (
 	"encoding/json"
 
-	"github.com/blue-jay/core/asset"
-	"github.com/blue-jay/core/email"
-	"github.com/blue-jay/core/form"
-	"github.com/blue-jay/core/generate"
-	"github.com/blue-jay/core/jsonconfig"
-	"github.com/blue-jay/core/server"
-	"github.com/blue-jay/core/session"
-	"github.com/blue-jay/core/storage/driver/mysql"
-	"github.com/blue-jay/core/view"
+	"github.com/blue-jay-fork/core/asset"
+	"github.com/blue-jay-fork/core/email"
+	"github.com/blue-jay-fork/core/form"
+	"github.com/blue-jay-fork/core/generate"
+	"github.com/blue-jay-fork/core/jsonconfig"
+	"github.com/blue-jay-fork/core/server"
+	"github.com/blue-jay-fork/core/session"
+	"github.com/blue-jay-fork/core/storage/driver/mysql"
+	"github.com/blue-jay-fork/core/view"
 )
 
 // *****************************************************************************
