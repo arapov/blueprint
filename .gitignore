@@ -1,5 +1,6 @@
 # Folders
 /vendor/
+/asset/
 /node_modules/
 /filestorage/*
 
