@@ -9,6 +9,9 @@
 thumbs.db
 !/filestorage/README.md
 
+# npm Files
+package-lock.json
+
 # Blue Jay Files
 env.json
 *.exe
