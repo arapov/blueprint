@@ -61,7 +61,7 @@ func Store(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// Login successfully
 			session.Empty(c.Sess)
-			c.Sess.AddFlash(flash.Info{"Login successful!", flash.Success})
+			c.Sess.AddFlash(flash.Info{Message: "Login successful!", Class: flash.Success})
 			c.Sess.Values["id"] = result.ID
 			c.Sess.Values["email"] = email
 			c.Sess.Values["first_name"] = result.FirstName

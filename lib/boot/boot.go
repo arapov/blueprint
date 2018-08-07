@@ -61,7 +61,7 @@ func RegisterServices(config *env.Info) {
 	flight.StoreDB(mysqlDB)
 
 	// Store the csrf information
-	flight.StoreXsrf(xsrf.Info{
+	flight.StoreXSRF(xsrf.Info{
 		AuthKey: config.Session.CSRFKey,
 		Secure:  config.Session.Options.Secure,
 	})

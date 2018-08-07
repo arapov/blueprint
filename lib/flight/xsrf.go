@@ -11,15 +11,15 @@ var (
 	xsrfMutex sync.RWMutex
 )
 
-// StoreXsrf sets the csrf configuration.
-func StoreXsrf(x xsrf.Info) {
+// StoreXSRF sets the csrf configuration.
+func StoreXSRF(x xsrf.Info) {
 	xsrfMutex.Lock()
 	xsrfInfo = x
 	xsrfMutex.Unlock()
 }
 
-// Xsrf returns the csrf configuration.
-func Xsrf() xsrf.Info {
+// XSRF returns the csrf configuration.
+func XSRF() xsrf.Info {
 	xsrfMutex.RLock()
 	x := xsrfInfo
 	xsrfMutex.RUnlock()

@@ -14,13 +14,13 @@ func TestXsrfRace(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		go func() {
 			// Set the csrf information
-			flight.StoreXsrf(xsrf.Info{
+			flight.StoreXSRF(xsrf.Info{
 				AuthKey: "test123",
 				Secure:  true,
 			})
-			x := flight.Xsrf()
+			x := flight.XSRF()
 			x.AuthKey = "test"
-			log.Println(flight.Xsrf().AuthKey)
+			log.Println(flight.XSRF().AuthKey)
 		}()
 	}
 }

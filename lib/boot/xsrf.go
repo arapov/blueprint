@@ -13,7 +13,7 @@ import (
 
 // setUpCSRF sets up the CSRF protection.
 func setUpCSRF(h http.Handler) http.Handler {
-	x := flight.Xsrf()
+	x := flight.XSRF()
 
 	// Decode the string
 	key, err := base64.StdEncoding.DecodeString(x.AuthKey)

@@ -45,7 +45,7 @@ func Store(w http.ResponseWriter, r *http.Request) {
 
 	// Validate passwords
 	if r.FormValue("password") != r.FormValue("password_verify") {
-		c.FlashError(errors.New("Passwords do not match."))
+		c.FlashError(errors.New("Passwords do not match"))
 		Index(w, r)
 		return
 	}
