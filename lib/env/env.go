@@ -3,6 +3,8 @@ package env
 
 import (
 	"encoding/json"
+	"os"
+	"regexp"
 
 	"github.com/blue-jay-fork/core/asset"
 	"github.com/blue-jay-fork/core/email"
@@ -40,7 +42,17 @@ func (c *Info) Path() string {
 
 // ParseJSON unmarshals bytes to structs
 func (c *Info) ParseJSON(b []byte) error {
-	return json.Unmarshal(b, &c)
+
+	// w is always "env:*" here, hence [4:]
+	Getenv := func(w string) string {
+		return os.Getenv(w[4:])
+	}
+
+	// Looking for all the "env:*" strings to replace with ENV vars
+	r := regexp.MustCompile(`env:[A-Z_]+`)
+	newB := r.ReplaceAllStringFunc(string(b), Getenv)
+
+	return json.Unmarshal([]byte(newB), &c)
 }
 
 // New returns a instance of the application settings.
