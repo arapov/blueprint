@@ -8,12 +8,11 @@ import (
 	"sync"
 
 	"github.com/blue-jay-fork/blueprint/lib/env"
-
+	"github.com/blue-jay-fork/blueprint/lib/ldapx"
 	"github.com/blue-jay-fork/core/flash"
 	"github.com/blue-jay-fork/core/form"
 	"github.com/blue-jay-fork/core/router"
 	"github.com/blue-jay-fork/core/view"
-
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 )
@@ -21,6 +20,7 @@ import (
 var (
 	configInfo env.Info
 	dbInfo     *sqlx.DB
+	ldapInfo   *ldapx.Conn
 
 	mutex sync.RWMutex
 )
@@ -41,6 +41,11 @@ func StoreDB(db *sqlx.DB) {
 	mutex.Unlock()
 }
 
+// StoreLDAP stores the ldap connection
+func StoreLDAP(ldapc *ldapx.Conn) {
+	ldapInfo = ldapc
+}
+
 // Info structures the application settings.
 type Info struct {
 	Config env.Info
@@ -50,6 +55,7 @@ type Info struct {
 	R      *http.Request
 	View   view.Info
 	DB     *sqlx.DB
+	LDAP   *ldapx.Conn
 }
 
 // Context returns the application settings.
@@ -74,6 +80,7 @@ func Context(w http.ResponseWriter, r *http.Request) Info {
 		R:      r,
 		View:   configInfo.View,
 		DB:     dbInfo,
+		LDAP:   ldapInfo,
 	}
 	mutex.RUnlock()
 
