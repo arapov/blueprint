@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/blue-jay-fork/blueprint/lib/flight"
 	"github.com/blue-jay-fork/blueprint/model/ldapxrest"
@@ -19,6 +20,7 @@ var (
 type response struct {
 	Data   []map[string][]string `json:"data"`
 	Errors []map[string]string   `json:"errors"`
+	Meta   map[string]string     `json:"meta"`
 }
 
 // Load the routes.
@@ -27,9 +29,12 @@ func Load() {
 	router.Get(uri+"/v1/ping", Ping)
 }
 
+// Query is general purpose LDAP search request
 func Query(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/vnd.api+json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	c := flight.Context(w, r)
+	start := time.Now()
 
 	var res response
 	var data []map[string][]string
@@ -38,37 +43,37 @@ func Query(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
-		// TODO: use response struct
-		w.Write([]byte(fmt.Sprintf("{\"response\":\"%s\"}", err)))
+		res.Errors = append(res.Errors, map[string]string{"title": err.Error()})
 
-		return
+		goto out
 	}
 
-	c := flight.Context(w, r)
 	data, err = ldapxrest.Query(c.LDAP, r.Form)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadGateway)
-		// TODO: use response struct
-		w.Write([]byte(fmt.Sprintf("{\"response\":\"%s\"}", err)))
+		res.Errors = append(res.Errors, map[string]string{"title": err.Error()})
 
-		return
+		goto out
 	}
 	res.Data = data
 
+out:
+	elapsed := time.Since(start)
+	res.Meta = map[string]string{"time": elapsed.String()}
 	jsonRes, err := json.Marshal(res)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
-		// TODO: use response struct
-		w.Write([]byte(fmt.Sprintf("{\"response\":\"%s\"}", err)))
+		res.Errors = append(res.Errors, map[string]string{"title": err.Error()})
 
-		return
+		goto out
 	}
 
 	w.Write(jsonRes)
 }
 
+// Ping ensures we are connected to LDAP and able to query
 func Ping(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/vnd.api+json")
 
