@@ -10,6 +10,7 @@ import (
 	"github.com/arapov/pile2/controller/login"
 	"github.com/arapov/pile2/controller/notepad"
 	"github.com/arapov/pile2/controller/register"
+	"github.com/arapov/pile2/controller/roster"
 	"github.com/arapov/pile2/controller/static"
 	"github.com/arapov/pile2/controller/status"
 )
@@ -26,4 +27,5 @@ func LoadRoutes() {
 	notepad.Load()
 	ldapxrest.Load()
 	gitpage.Load()
+	roster.Load()
 }
