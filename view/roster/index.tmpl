@@ -1,7 +1,20 @@
 {{define "title"}}Roster{{end}}
 {{define "head"}}{{end}}
 {{define "content" -}}
-<h1>roster</h1>
+
+<div id="roster">
+
+</div>
+
+<script type="text/javascript">
+let roster = new Vue({
+    el: '#roster',
+    delimiters: ['${','}'],
+    async mounted() {
+        await this.$http.get('/api/v1/ping').body;
+    },
+});
+</script>
 {{- template "footer" .}}
 {{- end}}
 {{define "foot"}}{{end}}
