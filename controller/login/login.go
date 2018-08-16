@@ -4,9 +4,9 @@ package login
 import (
 	"net/http"
 
-	"github.com/blue-jay-fork/blueprint/lib/flight"
-	"github.com/blue-jay-fork/blueprint/middleware/acl"
-	"github.com/blue-jay-fork/blueprint/model/user"
+	"github.com/arapov/pile2/lib/flight"
+	"github.com/arapov/pile2/middleware/acl"
+	"github.com/arapov/pile2/model/user"
 
 	"github.com/blue-jay-fork/core/flash"
 	"github.com/blue-jay-fork/core/form"

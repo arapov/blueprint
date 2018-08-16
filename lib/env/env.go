@@ -6,8 +6,8 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/blue-jay-fork/blueprint/lib/gitx"
-	"github.com/blue-jay-fork/blueprint/lib/ldapx"
+	"github.com/arapov/pile2/lib/gitx"
+	"github.com/arapov/pile2/lib/ldapx"
 	"github.com/blue-jay-fork/core/asset"
 	"github.com/blue-jay-fork/core/email"
 	"github.com/blue-jay-fork/core/form"

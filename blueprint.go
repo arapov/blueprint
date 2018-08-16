@@ -5,8 +5,8 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/blue-jay-fork/blueprint/lib/boot"
-	"github.com/blue-jay-fork/blueprint/lib/env"
+	"github.com/arapov/pile2/lib/boot"
+	"github.com/arapov/pile2/lib/env"
 
 	"github.com/blue-jay-fork/core/router"
 	"github.com/blue-jay-fork/core/server"

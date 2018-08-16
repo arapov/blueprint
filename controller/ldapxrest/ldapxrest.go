@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/blue-jay-fork/blueprint/lib/flight"
-	"github.com/blue-jay-fork/blueprint/model/ldapxrest"
+	"github.com/arapov/pile2/lib/flight"
+	"github.com/arapov/pile2/model/ldapxrest"
 	"github.com/blue-jay-fork/core/router"
 )
 

@@ -19,7 +19,7 @@ package-lock.json
 env.json
 *.exe
 *.exe~
-blueprint
+pile2
 
 # IDE metadata
 .idea

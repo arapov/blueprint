@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/http/pprof"
 
-	"github.com/blue-jay-fork/blueprint/middleware/acl"
+	"github.com/arapov/pile2/middleware/acl"
 
 	"github.com/blue-jay-fork/core/router"
 

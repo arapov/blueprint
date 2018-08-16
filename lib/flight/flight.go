@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/blue-jay-fork/blueprint/lib/env"
-	"github.com/blue-jay-fork/blueprint/lib/gitx"
-	"github.com/blue-jay-fork/blueprint/lib/ldapx"
+	"github.com/arapov/pile2/lib/env"
+	"github.com/arapov/pile2/lib/gitx"
+	"github.com/arapov/pile2/lib/ldapx"
 	"github.com/blue-jay-fork/core/flash"
 	"github.com/blue-jay-fork/core/form"
 	"github.com/blue-jay-fork/core/router"

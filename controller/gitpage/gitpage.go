@@ -3,8 +3,8 @@ package gitpage
 import (
 	"net/http"
 
-	"github.com/blue-jay-fork/blueprint/lib/flight"
-	"github.com/blue-jay-fork/blueprint/model/gitpage"
+	"github.com/arapov/pile2/lib/flight"
+	"github.com/arapov/pile2/model/gitpage"
 	"github.com/blue-jay-fork/core/router"
 )
 

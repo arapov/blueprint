@@ -6,9 +6,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/blue-jay-fork/blueprint/lib/env"
-	"github.com/blue-jay-fork/blueprint/lib/flight"
-	flashmod "github.com/blue-jay-fork/blueprint/viewmodify/flash"
+	"github.com/arapov/pile2/lib/env"
+	"github.com/arapov/pile2/lib/flight"
+	flashmod "github.com/arapov/pile2/viewmodify/flash"
 
 	"github.com/blue-jay-fork/core/flash"
 	"github.com/blue-jay-fork/core/session"
