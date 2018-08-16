@@ -11,7 +11,7 @@ let roster = new Vue({
     el: '#roster',
     delimiters: ['${','}'],
     async mounted() {
-        await this.$http.get('/api/v1/ping').body;
+        await this.$http.get('/api/v1/roster/groups').body;
     },
 });
 </script>
