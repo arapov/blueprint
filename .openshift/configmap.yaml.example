@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  GITPAGES_HOSTNAME: 'ssh://hostname/repo.git'
+  GITPAGES_REPO: /dir/to/gitrepo
+  GITPAGES_USER: username
+  GITPAGES_SSHKEY: /dir/to/.ssh/id_rsa
+  LDAP_BASEDN: basedn
+  LDAP_HOSTNAME: ldap.hostname
+  LDAP_PORT: '389'
+  SSH_KNOWN_HOSTS: /dir/to/.ssh/known_hosts
+kind: ConfigMap
+metadata:
+  name: yourappname
+  namespace: yournamespace

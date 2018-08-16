@@ -16,3 +16,10 @@ npm run watch
 sudo npm install -g npm-check-updates
 npm-check-updates -u -a
 ```
+
+## How to add secrets and configmap to openshift
+
+```bash
+oc create -f .openshift/secrets.yaml
+oc create -f .openshift/configmap.yaml
+```
