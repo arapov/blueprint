@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/blue-jay-fork/blueprint/lib/gitx"
 	"github.com/blue-jay-fork/blueprint/lib/ldapx"
 	"github.com/blue-jay-fork/core/asset"
 	"github.com/blue-jay-fork/core/email"
@@ -30,6 +31,7 @@ type Info struct {
 	Generation generate.Info `json:"Generation"`
 	MySQL      mysql.Info    `json:"MySQL"`
 	LDAP       ldapx.Info    `json:"LDAP"`
+	Git        gitx.Info     `json:"Git"`
 	Server     server.Info   `json:"Server"`
 	Session    session.Info  `json:"Session"`
 	Template   view.Template `json:"Template"`

@@ -39,6 +39,12 @@ func RegisterServices(config *env.Info) {
 		log.Println("started without LDAP setup")
 	}
 
+	// Connect to Git server, init repository
+	gitTree, _ := config.Git.Connect()
+	if gitTree == nil {
+		log.Println("started without Git setup")
+	}
+
 	// Load the controller routes
 	controller.LoadRoutes()
 
@@ -71,6 +77,9 @@ func RegisterServices(config *env.Info) {
 
 	// Store LDAP connection in flight
 	flight.StoreLDAP(ldapClient)
+
+	// Store Git Tree reference in flight
+	flight.StoreGIT(gitTree)
 
 	// Store the csrf information
 	flight.StoreXSRF(xsrf.Info{

@@ -4,6 +4,7 @@ package controller
 import (
 	"github.com/blue-jay-fork/blueprint/controller/about"
 	"github.com/blue-jay-fork/blueprint/controller/debug"
+	"github.com/blue-jay-fork/blueprint/controller/gitpage"
 	"github.com/blue-jay-fork/blueprint/controller/home"
 	"github.com/blue-jay-fork/blueprint/controller/ldapxrest"
 	"github.com/blue-jay-fork/blueprint/controller/login"
@@ -24,4 +25,5 @@ func LoadRoutes() {
 	status.Load()
 	notepad.Load()
 	ldapxrest.Load()
+	gitpage.Load()
 }

@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/blue-jay-fork/blueprint/lib/env"
+	"github.com/blue-jay-fork/blueprint/lib/gitx"
 	"github.com/blue-jay-fork/blueprint/lib/ldapx"
 	"github.com/blue-jay-fork/core/flash"
 	"github.com/blue-jay-fork/core/form"
@@ -21,6 +22,7 @@ var (
 	configInfo env.Info
 	dbInfo     *sqlx.DB
 	ldapInfo   *ldapx.Conn
+	gitInfo    *gitx.Tree
 
 	mutex sync.RWMutex
 )
@@ -46,6 +48,11 @@ func StoreLDAP(ldapc *ldapx.Conn) {
 	ldapInfo = ldapc
 }
 
+// StoreGIT stores the Git repository reference
+func StoreGIT(git *gitx.Tree) {
+	gitInfo = git
+}
+
 // Info structures the application settings.
 type Info struct {
 	Config env.Info
@@ -56,6 +63,7 @@ type Info struct {
 	View   view.Info
 	DB     *sqlx.DB
 	LDAP   *ldapx.Conn
+	Git    *gitx.Tree
 }
 
 // Context returns the application settings.
@@ -81,6 +89,7 @@ func Context(w http.ResponseWriter, r *http.Request) Info {
 		View:   configInfo.View,
 		DB:     dbInfo,
 		LDAP:   ldapInfo,
+		Git:    gitInfo,
 	}
 	mutex.RUnlock()
 
