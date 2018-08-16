@@ -81,6 +81,12 @@ gulp.task('vuejs', function() {
 		.pipe(gulp.dest(folderAsset + '/static/js/'));
 });
 
+// Vue.js-resource
+gulp.task('vuejs-resource', function() {
+	return gulp.src('node_modules/vue-resource/dist/vue-resource.min.js')
+		.pipe(gulp.dest(folderAsset + '/static/js/'));
+});
+
 // Underscore Task
 gulp.task('underscore', function() {
 	return gulp.src('node_modules/underscore/underscore-min.*')
@@ -254,7 +260,7 @@ gulp.task('watch', ['server:build'], function() {
 });
 
 // Init - every task
-gulp.task('init', ['sass', 'javascript', 'jquery', 'bootstrap', 'vuejs', 'underscore', 'favicon', 'server:build']);
+gulp.task('init', ['sass', 'javascript', 'jquery', 'bootstrap', 'vuejs', 'vuejs-resource', 'underscore', 'favicon', 'server:build']);
 
 // Default - only run the tasks that change often
 gulp.task('default', ['sass', 'javascript', 'server:build']);
