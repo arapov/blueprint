@@ -9,6 +9,9 @@
 thumbs.db
 !/filestorage/README.md
 
+# Development
+.env.variables
+
 # npm Files
 package-lock.json
 
