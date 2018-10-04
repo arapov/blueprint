@@ -22,8 +22,12 @@ type response struct {
 // Load the routes.
 func Load() {
 	router.Get("/roster", Index)
+	router.Get("/roster/", Index)
+	router.Get("/roster/:group", Index)
 
 	router.Get("/api/v1/roster/groups", apiGetGroups)
+	router.Get("/api/v1/roster/groups/", apiGetGroups)
+	router.Get("/api/v1/roster/groups/:group", apiGetGroups)
 }
 
 func apiGetGroups(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +39,7 @@ func apiGetGroups(w http.ResponseWriter, r *http.Request) {
 	var res response
 	var data []map[string][]string
 
-	data, err := roster.GetGroups(c.LDAP)
+	data, err := roster.GetGroups(c.LDAP, c.Param("group"))
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadGateway)
@@ -63,7 +67,9 @@ out:
 // Index displays the page.
 func Index(w http.ResponseWriter, r *http.Request) {
 	c := flight.Context(w, r)
-
 	v := c.View.New("roster/index")
+
+	v.Vars["group"] = c.Param("group")
+
 	v.Render(w, r)
 }

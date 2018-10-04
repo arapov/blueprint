@@ -4,14 +4,29 @@
 
 <div id="roster">
 
+    <div v-for="group in groups" class="card my-2">
+        <div class="card-header">
+            <span>${group.description[0]}</span>
+            <span><a :href="'/roster/' + group.cn[0]" target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
+        </div>
+        <div class="card-body">
+            TODO: content
+        </div>
+    </div>
+
 </div>
 
 <script type="text/javascript">
 let roster = new Vue({
     el: '#roster',
     delimiters: ['${','}'],
+    data: {
+        groups: [
+            { cn: [], description: [], },
+        ],
+    },
     async mounted() {
-        await this.$http.get('/api/v1/roster/groups').body;
+        this.groups = (await this.$http.get('/api/v1/roster/groups/' + {{.group}} )).body.data;
     },
 });
 </script>

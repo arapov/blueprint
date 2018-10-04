@@ -7,6 +7,7 @@ data:
   LDAP_BASEDN: basedn
   LDAP_HOSTNAME: ldap.hostname
   LDAP_PORT: '389'
+  LDAP_GROUPS_PREFIX: ldap.grp.prefix
   SSH_KNOWN_HOSTS: /dir/to/.ssh/known_hosts
 kind: ConfigMap
 metadata:
