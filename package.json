@@ -11,7 +11,7 @@
         "gulp-livereload": "^4.0.0",
         "gulp-minify": "3.1.0",
         "gulp-real-favicon": "^0.3.0",
-        "gulp-sass": "^4.0.1",
+        "gulp-sass": "^4.0.2",
         "gulp-sync": "^0.1.4",
         "gulp-util": "^3.0.8",
         "jquery": "3",

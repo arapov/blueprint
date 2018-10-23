@@ -9,3 +9,10 @@ npm install
 npm run init
 npm run watch
 ```
+
+## How to update JavaScript dependencies (packages.json)?
+
+```bash
+sudo npm install -g npm-check-updates
+npm-check-updates -u -a
+```
