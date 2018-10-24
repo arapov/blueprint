@@ -36,6 +36,7 @@ func Query(w http.ResponseWriter, r *http.Request) {
 	c := flight.Context(w, r)
 	start := time.Now()
 
+	var filter string
 	var res response
 	var data []map[string][]string
 
@@ -48,7 +49,7 @@ func Query(w http.ResponseWriter, r *http.Request) {
 		goto out
 	}
 
-	data, err = ldapxrest.Query(c.LDAP, r.Form)
+	data, err = ldapxrest.Query(c.LDAP, r.Form, &filter)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadGateway)
@@ -60,7 +61,10 @@ func Query(w http.ResponseWriter, r *http.Request) {
 
 out:
 	elapsed := time.Since(start)
-	res.Meta = map[string]string{"time": elapsed.String()}
+	res.Meta = map[string]string{
+		"time":   elapsed.String(),
+		"filter": filter,
+	}
 	jsonRes, err := json.Marshal(res)
 	if err != nil {
 		log.Println(err)

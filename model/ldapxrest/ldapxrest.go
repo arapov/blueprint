@@ -12,8 +12,7 @@ type Connection interface {
 	Ping() error
 }
 
-func Query(ldapc Connection, formValues map[string][]string) ([]map[string][]string, error) {
-	var filter string
+func Query(ldapc Connection, formValues map[string][]string, filter *string) ([]map[string][]string, error) {
 	var attributes []string
 
 	var andKeyList = make(map[string][]string)
@@ -46,7 +45,7 @@ func Query(ldapc Connection, formValues map[string][]string) ([]map[string][]str
 		}
 	}
 	if andFilter != "" {
-		filter = fmt.Sprintf("(&%s)", andFilter)
+		*filter = fmt.Sprintf("(&%s)", andFilter)
 	}
 
 	var orFilter string
@@ -62,10 +61,10 @@ func Query(ldapc Connection, formValues map[string][]string) ([]map[string][]str
 		}
 	}
 	if orFilter != "" {
-		filter = fmt.Sprintf("(|%s)", orFilter)
+		*filter = fmt.Sprintf("(|%s)", orFilter)
 	}
 
-	res, err := ldapc.Query(filter, attributes)
+	res, err := ldapc.Query(*filter, attributes)
 	if err != nil {
 		log.Println(err)
 		return nil, err
