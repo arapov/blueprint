@@ -71,7 +71,7 @@ gulp.task('bootstrap', function() {
 		.pipe(gulp.dest(folderAsset + '/static/css/'));
 	gulp.src('node_modules/bootstrap/dist/fonts/*')
 		.pipe(gulp.dest(folderAsset + '/static/fonts/'));
-	return gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
+	return gulp.src('node_modules/bootstrap/dist/js/bootstrap*min.js')
 		.pipe(gulp.dest(folderAsset + '/static/js/'));
 });
 

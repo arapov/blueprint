@@ -5,10 +5,19 @@
 <div id="roster">
 
     <div v-for="group in groups" class="card my-2">
+
         <div class="card-header">
-            <span>${group.description[0]}</span>
-            <span><a :href="'/roster/' + group.cn[0]" target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
+            <span>${ group.description[0] }</span>
+            <span><a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
+
+            <div class="dropdown float-right">
+                <a class="btn btn-link btn-sm dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" :href="'https://rover.redhat.com/groups/group/' + group.cn[0] ">Edit</a>
+                </div>
+            </div>
         </div>
+
         <div class="card-body">
             TODO: content
         </div>

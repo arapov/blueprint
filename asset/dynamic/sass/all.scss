@@ -37,10 +37,16 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 // *****************************************************************************
-// Bootstrap Card Header Links Color
+// Bootstrap Card Header Customizations
 // *****************************************************************************
-.card-header .card-link {color: grey; }
-.card-header .card-link:hover {color: black;}
+
+.card-header .card-link {color: lightgrey; }
+.card-header .card-link:hover {color: black; }
+.card-header .btn-link {color: lightgrey; }
+.card-header .btn-link:hover {color: black; }
+.card-header .dropdown-toggle::after {
+    display: none;
+}
 
 // *****************************************************************************
 // Form
