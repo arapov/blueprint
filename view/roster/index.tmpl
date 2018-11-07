@@ -19,6 +19,13 @@
                     </div>
                 </span>
             </div>
+
+            <!-- card stats -->
+            <div class="card-stats float-right mr-4">
+                <span v-if="group.subGroup.length > 0" class="mr-1"><i class="fas fa-users"></i><strong>&nbsp;${ group.subGroup.length }</strong></span>
+                <span v-if="group.uniqueMember.length > 0"><i class="fas fa-user"></i><strong>&nbsp;${ group.uniqueMember.length }</strong></span>
+            </div>
+
         </div>
 
         <div class="card-body">
@@ -34,7 +41,11 @@ let roster = new Vue({
     delimiters: ['${','}'],
     data: {
         groups: [
-            { cn: [], description: [], },
+            {   cn: [],
+                description: [],
+                subGroup: [],
+                uniqueMember: [],
+            },
         ],
     },
     async mounted() {
