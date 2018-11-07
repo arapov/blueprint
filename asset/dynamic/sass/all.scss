@@ -40,10 +40,10 @@ body, h1, h2, h3, h4, h5, h6 {
 // Bootstrap Card Header Customizations
 // *****************************************************************************
 
-.card-header .card-link {color: lightgrey; }
-.card-header .card-link:hover {color: black; }
-.card-header .btn-link {color: lightgrey; }
-.card-header .btn-link:hover {color: black; }
+.card-header .card-link {color: #212529; }
+.card-header .card-link:hover {color: lightgrey; }
+.card-header .btn-link {color: #212529; }
+.card-header .btn-link:hover {color: lightgrey; }
 .card-header .dropdown-toggle::after {
     display: none;
 }
