@@ -8,8 +8,14 @@
         <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="cloud">${ group.description[0] }</a>
     </div>
 
-    <div v-for="group in orderedGroups" class="card my-2">
+    <!-- Spinner -->
+    <div v-if="!ready" class="card my-2">
+        <div class="card-header">Roster is loading...</div>
+        <div class="card-body mx-auto"><i class="fas fa-spinner fa-5x fa-spin"></i></div>
+    </div>
 
+    <!-- Cards -->
+    <div v-if="ready" v-for="group in orderedGroups" class="card my-2">
         <div :id="group.cn[0]" class="card-header">
             <span>${ group.description[0] }</span>
 
@@ -51,6 +57,7 @@ let roster = new Vue({
                 uniqueMember: [],
             },
         ],
+        ready: false,
     },
     computed: {
         orderedGroups() {
@@ -59,6 +66,7 @@ let roster = new Vue({
     },
     async mounted() {
         this.groups = (await this.$http.get('/api/v1/roster/groups/' + {{.group}} )).body.data;
+        this.ready = true;
     },
 });
 </script>
