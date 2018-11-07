@@ -4,9 +4,13 @@
 
 <div id="roster">
 
+    <div v-if="groups.length > 1" class="page-header p-2">
+        <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="cloud">${ group.description[0] }</a>
+    </div>
+
     <div v-for="group in orderedGroups" class="card my-2">
 
-        <div class="card-header">
+        <div :id="group.cn[0]" class="card-header">
             <span>${ group.description[0] }</span>
 
             <!-- card actions -->
