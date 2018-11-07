@@ -4,7 +4,7 @@
 
 <div id="roster">
 
-    <div v-for="group in groups" class="card my-2">
+    <div v-for="group in orderedGroups" class="card my-2">
 
         <div class="card-header">
             <span>${ group.description[0] }</span>
@@ -47,6 +47,11 @@ let roster = new Vue({
                 uniqueMember: [],
             },
         ],
+    },
+    computed: {
+        orderedGroups() {
+            return _.sortBy(this.groups, 'cn')
+        },
     },
     async mounted() {
         this.groups = (await this.$http.get('/api/v1/roster/groups/' + {{.group}} )).body.data;
