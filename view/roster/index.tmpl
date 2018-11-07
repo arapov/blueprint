@@ -21,8 +21,8 @@
 
             <!-- card actions -->
             <div class="float-right">
-                <span class="mr-2"><a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
-                <span class="dropdown">
+                <span class="mr-2" title="Open in new window."><a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
+                <span class="dropdown" title="Actions...">
                     <a class="btn btn-link btn-sm dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" :href="'https://rover.redhat.com/groups/group/' + group.cn[0] ">Edit</a>
@@ -32,8 +32,8 @@
 
             <!-- card stats -->
             <div class="card-stats float-right mr-4">
-                <span v-if="group.subGroup.length > 0" class="mr-1"><i class="fas fa-users"></i><strong>&nbsp;${ group.subGroup.length }</strong></span>
-                <span v-if="group.uniqueMember.length > 0"><i class="fas fa-user"></i><strong>&nbsp;${ group.uniqueMember.length }</strong></span>
+                <span v-if="group.subGroup.length > 0" class="mr-1" title="Number of subgroups."><i class="fas fa-users"></i><strong>&nbsp;${ group.subGroup.length }</strong></span>
+                <span v-if="group.uniqueMember.length > 0" title="Number of people in the group."><i class="fas fa-user"></i><strong>&nbsp;${ group.uniqueMember.length }</strong></span>
             </div>
 
         </div>
