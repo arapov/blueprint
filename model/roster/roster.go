@@ -12,16 +12,43 @@ type Connection interface {
 }
 
 func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]string, error) {
-
-	attributes := []string{"cn", "description", "uniqueMember"}
-
 	// TODO: Find a better, generic place
 	subGroupPrefix := os.Getenv("LDAP_SUBGROUPS_PREFIX")
 	groupPrefix := os.Getenv("LDAP_GROUPS_PREFIX")
-	// objectClass rhatRoverGroup hardcoded due to app specific case, it's
-	// unlikely and not meant to be used anywhere else
-	*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(cn=%s*))", subGroupPrefix, groupPrefix)
+	rolesPrefix := os.Getenv("LDAP_GROUPS_ROLES_PREFIX")
 
+	// Get all custom roles
+	*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s*))", rolesPrefix)
+	ldapRoles, _ := ldapc.Query(*filter, []string{"description"})
+	// Get members data that belong to custom roles
+	*filter = fmt.Sprintf("(&(objectClass=rhatPerson)(memberOf=*%s*))", rolesPrefix)
+	ldapMembersRoles, _ := ldapc.Query(*filter, []string{"uid", "cn", "memberOf"})
+
+	// Building up the map with members and its roles
+	// e.g. mapMemberRole["uid=?,ou=?,ou=?"] = [...]["jdoe", "John Doe", "Fancy Role Name"]
+	mapMemberRole := make(map[string][][]string)
+	var roles []string // used later to fill in the groups info
+	for _, ldapRole := range ldapRoles {
+		roledn := ldapRole["dn"][0]            // e.g. "cn=?,ou=?,ou=?"
+		rolename := ldapRole["description"][0] // e.g. "Fancy Role Name"
+
+		roles = append(roles, rolename)
+
+		for _, member := range ldapMembersRoles {
+			if contains(member["memberOf"], roledn) {
+				memberdn := member["dn"][0] // e.g. "uid=?,ou=?,ou=?"
+				memberuid := member["uid"][0]
+				membername := member["cn"][0]
+
+				info := []string{memberuid, membername, rolename}
+
+				mapMemberRole[memberdn] = append(mapMemberRole[memberdn], info)
+			}
+		}
+	}
+
+	// Get groups
+	*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(cn=%s*))", subGroupPrefix, groupPrefix)
 	// Amend the default query in case we have groups defined
 	if groups != "" {
 		groupPrefix = ""
@@ -30,38 +57,65 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 		}
 		*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(|%s))", subGroupPrefix, groupPrefix)
 	}
-
-	ldapGroups, err := ldapc.Query(*filter, attributes)
+	ldapGroups, err := ldapc.Query(*filter, []string{"cn", "description", "uniqueMember"})
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	// Look for subgroups and merge stats
-	var res []map[string][]string
+	// Building up a Group data
 	for _, ldapGroup := range ldapGroups {
-		var uniqueMember []string
+		var uniqueMembers []string
 
-		uniqueMember = append(uniqueMember, ldapGroup["uniqueMember"]...)
+		// Each group must have consistent structure, even if the its content is null
 		ldapGroup["subGroup"] = []string{}
+		for _, role := range roles {
+			ldapGroup[role] = []string{}
+		}
+		ldapGroup["roles"] = roles
 
+		// Get possible sub-groups, and merge sub-group info and its members into parent group
 		filter := fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s%s*))", ldapGroup["cn"][0], subGroupPrefix)
-		ldapSubGroups, _ := ldapc.Query(filter, attributes)
+		ldapSubGroups, _ := ldapc.Query(filter, []string{"cn", "description", "uniqueMember"})
+		uniqueMembers = append(uniqueMembers, ldapGroup["uniqueMember"]...)
 		for _, ldapSubGroup := range ldapSubGroups {
 			// Extending Group data with the information about subGroups
 			ldapGroup["subGroup"] = append(ldapGroup["subGroup"], ldapSubGroup["cn"][0])
 
 			// Merging subGroup members with group members
-			uniqueMember = append(uniqueMember, ldapSubGroup["uniqueMember"]...)
+			uniqueMembers = append(uniqueMembers, ldapSubGroup["uniqueMember"]...)
+		}
+		removeDuplicates(&uniqueMembers)
+		ldapGroup["uniqueMember"] = uniqueMembers
+
+		// Extend Group with the special roles and members
+		for _, uniqueMember := range uniqueMembers {
+			if _, ok := mapMemberRole[uniqueMember]; !ok {
+				continue
+			}
+
+			for _, member := range mapMemberRole[uniqueMember] {
+				name := fmt.Sprintf("%s,%s", member[0], member[1])
+				role := member[2]
+
+				ldapGroup[role] = append(ldapGroup[role], name)
+			}
 		}
 
-		removeDuplicates(&uniqueMember)
-		ldapGroup["uniqueMember"] = uniqueMember
-
-		res = append(res, ldapGroup)
+		delete(ldapGroup, "dn")
 	}
 
-	return res, err
+	return ldapGroups, err
+}
+
+func contains(slice []string, item string) bool {
+	set := make(map[string]struct{}, len(slice))
+	for _, s := range slice {
+		set[s] = struct{}{}
+	}
+
+	_, ok := set[item]
+	return ok
 }
 
 func removeDuplicates(xs *[]string) {
