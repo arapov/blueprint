@@ -57,6 +57,8 @@ func (c *Conn) Query(filter string, attributes []string) ([]map[string][]string,
 			ldapEntry[attr.Name] = attr.Values
 		}
 
+		ldapEntry["dn"] = append(ldapEntry["dn"], entry.DN)
+
 		res = append(res, ldapEntry)
 	}
 
