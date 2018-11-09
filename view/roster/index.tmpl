@@ -65,7 +65,16 @@ let roster = new Vue({
         },
     },
     async mounted() {
-        this.groups = (await this.$http.get('/api/v1/roster/groups/' + {{.group}} )).body.data;
+        await this.$http.get('/api/v1/roster/groups/' + {{.group}} ).then(response => {
+            this.groups = response.body.data;
+        }, response => {
+            this.groups = [{
+                    "cn": [response.body.errors[0].title],
+                    "description": [response.body.errors[0].title],
+                    subGroup: [],
+                    uniqueMember: [],
+                }];
+        });
         this.ready = true;
     },
 });

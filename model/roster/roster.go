@@ -1,6 +1,7 @@
 package roster
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -13,16 +14,25 @@ type Connection interface {
 
 func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]string, error) {
 	// TODO: Find a better, generic place
-	subGroupPrefix := os.Getenv("LDAP_SUBGROUPS_PREFIX")
 	groupPrefix := os.Getenv("LDAP_GROUPS_PREFIX")
+	subGroupPrefix := os.Getenv("LDAP_SUBGROUPS_PREFIX")
 	rolesPrefix := os.Getenv("LDAP_GROUPS_ROLES_PREFIX")
 
+	if groupPrefix == "" {
+		return nil, errors.New("LDAP_GROUP_PREFIX variable is not defined.")
+	}
+
 	// Get all custom roles
-	*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s*))", rolesPrefix)
-	ldapRoles, _ := ldapc.Query(*filter, []string{"description"})
-	// Get members data that belong to custom roles
-	*filter = fmt.Sprintf("(&(objectClass=rhatPerson)(memberOf=*%s*))", rolesPrefix)
-	ldapMembersRoles, _ := ldapc.Query(*filter, []string{"uid", "cn", "memberOf"})
+	var ldapRoles []map[string][]string
+	var ldapMembersRoles []map[string][]string
+	if rolesPrefix != "" {
+		*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s*))", rolesPrefix)
+		ldapRoles, _ = ldapc.Query(*filter, []string{"description"})
+
+		// Get members data that belong to custom roles
+		*filter = fmt.Sprintf("(&(objectClass=rhatPerson)(memberOf=*%s*))", rolesPrefix)
+		ldapMembersRoles, _ = ldapc.Query(*filter, []string{"uid", "cn", "memberOf"})
+	}
 
 	// Building up the map with members and its roles
 	// e.g. mapMemberRole["uid=?,ou=?,ou=?"] = [...]["jdoe", "John Doe", "Fancy Role Name"]
@@ -48,14 +58,20 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 	}
 
 	// Get groups
-	*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(cn=%s*))", subGroupPrefix, groupPrefix)
+	*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s*))", groupPrefix)
+	if subGroupPrefix != "" {
+		*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(cn=%s*))", subGroupPrefix, groupPrefix)
+	}
 	// Amend the default query in case we have groups defined
 	if groups != "" {
 		groupPrefix = ""
 		for _, group := range strings.Split(groups, ",") {
 			groupPrefix += fmt.Sprintf("(cn=%s)", group)
 		}
-		*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(|%s))", subGroupPrefix, groupPrefix)
+		*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(|%s))", groupPrefix)
+		if subGroupPrefix != "" {
+			*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(|%s))", subGroupPrefix, groupPrefix)
+		}
 	}
 	ldapGroups, err := ldapc.Query(*filter, []string{"cn", "description", "uniqueMember"})
 	if err != nil {
@@ -66,6 +82,7 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 	// Building up a Group data
 	for _, ldapGroup := range ldapGroups {
 		var uniqueMembers []string
+		uniqueMembers = append(uniqueMembers, ldapGroup["uniqueMember"]...)
 
 		// Each group must have consistent structure, even if the its content is null
 		ldapGroup["subGroup"] = []string{}
@@ -75,18 +92,19 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 		ldapGroup["roles"] = roles
 
 		// Get possible sub-groups, and merge sub-group info and its members into parent group
-		filter := fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s%s*))", ldapGroup["cn"][0], subGroupPrefix)
-		ldapSubGroups, _ := ldapc.Query(filter, []string{"cn", "description", "uniqueMember"})
-		uniqueMembers = append(uniqueMembers, ldapGroup["uniqueMember"]...)
-		for _, ldapSubGroup := range ldapSubGroups {
-			// Extending Group data with the information about subGroups
-			ldapGroup["subGroup"] = append(ldapGroup["subGroup"], ldapSubGroup["cn"][0])
+		if subGroupPrefix != "" {
+			filter := fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s%s*))", ldapGroup["cn"][0], subGroupPrefix)
+			ldapSubGroups, _ := ldapc.Query(filter, []string{"cn", "description", "uniqueMember"})
+			for _, ldapSubGroup := range ldapSubGroups {
+				// Extending Group data with the information about subGroups
+				ldapGroup["subGroup"] = append(ldapGroup["subGroup"], ldapSubGroup["cn"][0])
 
-			// Merging subGroup members with group members
-			uniqueMembers = append(uniqueMembers, ldapSubGroup["uniqueMember"]...)
+				// Merging subGroup members with group members
+				uniqueMembers = append(uniqueMembers, ldapSubGroup["uniqueMember"]...)
+			}
+			removeDuplicates(&uniqueMembers)
+			ldapGroup["uniqueMember"] = uniqueMembers
 		}
-		removeDuplicates(&uniqueMembers)
-		ldapGroup["uniqueMember"] = uniqueMembers
 
 		// Extend Group with the special roles and members
 		for _, uniqueMember := range uniqueMembers {
@@ -101,8 +119,6 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 				ldapGroup[role] = append(ldapGroup[role], name)
 			}
 		}
-
-		delete(ldapGroup, "dn")
 	}
 
 	return ldapGroups, err

@@ -61,8 +61,6 @@ out:
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		res.Errors = append(res.Errors, map[string]string{"title": err.Error()})
-
-		goto out
 	}
 
 	w.Write(jsonRes)
