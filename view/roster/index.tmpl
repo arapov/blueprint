@@ -4,6 +4,7 @@
 
 <div id="roster">
 
+    <!-- Cloud -->
     <div v-if="groups.length > 1" class="page-header p-2">
         <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="cloud">${ group.description[0] }</a>
     </div>
@@ -21,7 +22,7 @@
 
             <!-- card actions -->
             <div class="float-right">
-                <span class="mr-2" title="Open in new window."><a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
+                <span v-if="groups.length > 1" class="mr-2" title="Open in new window."><a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
                 <span class="dropdown" title="Actions...">
                     <a class="btn btn-link btn-sm dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></a>
                     <div class="dropdown-menu">
