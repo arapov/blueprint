@@ -53,17 +53,18 @@ body, h1, h2, h3, h4, h5, h6 {
 // Draw cloud nicely
 // *****************************************************************************
 
-.cloud a {
+a.cloud  {
 	white-space: nowrap;
 }
 
-.cloud:hover {
+a.cloud:hover {
 	color: red;
 	text-decoration: none;
 }
 
-.cloud + .cloud:before {
+a.cloud + .cloud:before {
 	content: " | ";
+	white-space: pre-wrap;
 	color: black;
 }
 
