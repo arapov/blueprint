@@ -71,7 +71,7 @@ let roster = new Vue({
         }, response => {
             this.groups = [{
                     "cn": [response.body.errors[0].title],
-                    "description": [response.body.errors[0].title],
+                    "description": ["Error: " + response.body.errors[0].title],
                     subGroup: [],
                     uniqueMember: [],
                 }];
