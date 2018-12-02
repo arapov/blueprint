@@ -37,7 +37,7 @@ func (c Info) Dial() (*Conn, error) {
 // from LDAP. It returns all the fields if attributes is not set and nil.
 func (c *Conn) Query(filter string, attributes []string) ([]map[string][]string, error) {
 	if c == nil {
-		return nil, errors.New("LDAP connection is dead")
+		return nil, errors.New("roster was started without LDAP setup, LDAP configuration must be provided")
 	}
 
 	request := ldap.NewSearchRequest(
