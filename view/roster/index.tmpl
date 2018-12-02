@@ -5,8 +5,8 @@
 <div id="roster">
 
     <!-- Cloud -->
-    <div v-if="groups.length > 1" class="page-header p-2">
-        <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="cloud">${ group.description[0] }</a>
+    <div v-if="groups.length > 1" class="page-header p-2 text-center text-lowercase">
+        <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="btn btn-outline-secondary btn-sm m-1">${ group.description[0] }</a>
     </div>
 
     <!-- Spinner -->
