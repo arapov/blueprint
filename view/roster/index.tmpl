@@ -16,7 +16,7 @@
     </div>
 
     <!-- Cards -->
-    <div v-if="ready" v-for="group in orderedGroups" class="card my-2">
+    <div v-if="ready" v-for="group in orderedGroups" class="card my-3">
         <div :id="group.cn[0]" class="card-header">
             <span class="text-capitalize">${ group.description[0] }</span>
 
@@ -54,6 +54,11 @@
                 </div>
             </div>
         </div>
+
+        <button class="btn btn-link btn-sm">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+
     </div>
 
 </div>
