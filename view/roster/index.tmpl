@@ -18,7 +18,7 @@
     <!-- Cards -->
     <div v-if="ready" v-for="group in orderedGroups" class="card my-2">
         <div :id="group.cn[0]" class="card-header">
-            <span>${ group.description[0] }</span>
+            <span class="text-capitalize">${ group.description[0] }</span>
 
             <!-- card actions -->
             <div class="float-right">
