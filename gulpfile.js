@@ -2,13 +2,12 @@
 var gulp        = require('gulp');
 var favicon     = require('gulp-real-favicon');
 var fs          = require('fs');
-var runSequence = require('run-sequence'); // Using until gulp v4 is released
+var runSequence = require('gulp4-run-sequence'); // todo: rework, Using until gulp v4 is released
 var reload      = require('gulp-livereload');
-var sync        = require('gulp-sync')(gulp).sync;
 var child       = require('child_process');
-var util        = require('gulp-util');
 var path        = require('path');
 var os          = require('os');
+var log         = require('fancy-log');
 
 // Enviroment variables
 var env = JSON.parse(fs.readFileSync('./env.json'))
@@ -44,7 +43,7 @@ gulp.task('javascript', function() {
 	var babel = require('gulp-babel');
 	return gulp.src(folderAsset + '/dynamic/js/*.js')
 		.pipe(babel({
-			presets: ['es2015']
+			presets: ['env']
 		}))
 		.pipe(concat('all.js'))
 		.pipe(minify({
@@ -94,8 +93,9 @@ gulp.task('underscore', function() {
 });
 
 // Favicon Generation and Injection Task
-gulp.task('favicon', function() {
+gulp.task('favicon', function(done) {
 	runSequence('favicon-generate', 'favicon-inject');
+	done();
 });
 
 // Generate the icons. This task takes a few seconds to complete.
@@ -173,26 +173,28 @@ gulp.task('favicon-update', function(done) {
 });
 
 // Monitor Go files for changes
-gulp.task('server:watch', function() {
+gulp.task('server:watch', function(done) {
 	// Restart application
 	gulp.watch([
 		'*/**/*.tmpl',
 		'env.json'
-	], ['server:spawn']);
+	], gulp.series(['server:spawn']));
 	
 	// Rebuild and restart application server
 	gulp.watch([
 		'*.go',
 		'*/**/*.go'
-	], [
+	], gulp.series([
 		'server:build',
 		'server:spawn'
-	]);
+	]));
+
+	done();
 });
 
 // Build application from source
 gulp.task('server:build', function() {
-	var build = child.spawnSync('go', ['build']);
+	var build = child.spawn('go', ['build']);
 	if (build.stderr.length) {
 		var lines = build.stderr.toString()
 		.split('\n').filter(function(line) {
@@ -211,7 +213,7 @@ gulp.task('server:build', function() {
 });
 
 // Spawn an application process
-gulp.task('server:spawn', function() {
+gulp.task('server:spawn', function(done) {
 	if (server)
 		server.kill();
 	
@@ -235,32 +237,35 @@ gulp.task('server:spawn', function() {
 		var lines = data.toString().split('\n')
 		for (var l in lines)
 		if (lines[l].length)
-		util.log(lines[l]);
+		log(lines[l]);
 	});
 	
 	// Print errors to stdout
 	server.stderr.on('data', function(data) {
 		process.stdout.write(data.toString());
 	});
+
+	done();
 });
 
 // Main watch function.
-gulp.task('watch', ['server:build'], function() {
+gulp.task('watch', gulp.series(['server:build', 'server:watch', 'server:spawn'], function(done) {
 	// Start the listener (use with the LiveReload Chrome Extension)
 	reload.listen();
 
 	// Watch the assets
-	gulp.watch(folderAsset + '/dynamic/sass/**/*.scss', ['sass']);
-	gulp.watch(folderAsset + '/dynamic/js/*.js', ['javascript']);
+	gulp.watch(folderAsset + '/dynamic/sass/**/*.scss', gulp.series('sass'));
+	gulp.watch(folderAsset + '/dynamic/js/*.js', gulp.series('javascript'));
 	
-	return gulp.start(sync([
-		'server:watch',
-		'server:spawn'
-	]));
-});
+	done();
+}));
 
 // Init - every task
-gulp.task('init', ['sass', 'javascript', 'jquery', 'bootstrap', 'vuejs', 'vuejs-resource', 'underscore', 'favicon', 'server:build']);
+gulp.task('init', gulp.series(['sass', 'javascript', 'jquery', 'bootstrap', 'vuejs', 'vuejs-resource', 'underscore', 'favicon', 'server:build']), function(done) {
+	done();
+});
 
 // Default - only run the tasks that change often
-gulp.task('default', ['sass', 'javascript', 'server:build']);
+gulp.task('default', gulp.series(['sass', 'javascript', 'server:build']), function(done) {
+	done();
+});
