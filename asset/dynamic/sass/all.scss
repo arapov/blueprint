@@ -62,9 +62,14 @@ body, h1, h2, h3, h4, h5, h6 {
 // Helpers
 // *****************************************************************************
 
-.comma + .comma:before {
+.card-body .comma + .comma:before {
 	content: ", ";
 	color: black;
+}
+
+.card-body a.comma:hover {
+	color: red;
+	text-decoration: none;
 }
 
 // *****************************************************************************

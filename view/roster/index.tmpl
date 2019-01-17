@@ -46,10 +46,10 @@
                         <span>TODO: links</span>
                     </div>
                     <div class="col-10">
-                        <ul class="list-unstyled">
-                            <li v-for="role in group.roles" v-if="group[role].length > 0">
+                        <ul class="list-unstyled row">
+                            <li v-for="role in group.roles" v-if="group[role].length > 0" class="list-item col-6">
                                 ${role}<span v-if="group[role].length > 1">s</span>:
-                                 <a href="" v-for="man in group[role]" class="comma">${man.split(',')[1]}</a>
+                                <a :href="'https://rover.redhat.com/people/profile/' + man.split(',')[0]" v-for="man in group[role]" class="comma">${man.split(',')[1]}</a>
                             </li>
                         </ul>
                     </div>
