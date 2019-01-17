@@ -10,24 +10,10 @@
 @import "../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
 @import "../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600");
+
 /* CSS for Blue Jay Blueprint version #{$version}. */
-
-// *****************************************************************************
-// Global
-// *****************************************************************************
-
-body, h1, h2, h3, h4, h5, h6 {
-	font-family: $fontFamily;
-}
-
-// *****************************************************************************
-// Page
-// *****************************************************************************
-
-.page-header {
-	border-bottom: 0;
-	margin-top: 0;
-}
 
 // *****************************************************************************
 // Flash Message
@@ -70,35 +56,4 @@ body, h1, h2, h3, h4, h5, h6 {
 .card-body a.comma:hover {
 	color: red;
 	text-decoration: none;
-}
-
-// *****************************************************************************
-// Form
-// *****************************************************************************
-
-.button-form {
-	display: inline-block;
-}
-
-// *****************************************************************************
-// Table
-// *****************************************************************************
-
-.table-center {
-	text-align: center;
-	th {
-		text-align: center;
-	}
-	th, td {
-		vertical-align: middle !important;
-	}
-}
-
-// *****************************************************************************
-// Flicker on Load Fix for Glyphicons
-// *****************************************************************************
-
-.glyphicon {
-   width: 14px;
-   height: 14px;
 }

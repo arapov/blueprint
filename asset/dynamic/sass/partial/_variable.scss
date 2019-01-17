@@ -3,6 +3,11 @@
 // *****************************************************************************
 
 $version: 					"1.0";
-$fontFamily:				"Open Sans", Helvetica, Arial, sans-serif;
 
+// Typography
+$font-family-sans-serif:    "Open Sans", sans-serif;
+$font-size-base:            0.75rem;
+$line-height-base:          1.4;
+
+// Bootstrap tweaks
 $enable-rounded:            false;
