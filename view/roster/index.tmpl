@@ -5,7 +5,7 @@
 <div id="roster">
 
     <!-- Cloud -->
-    <div v-if="groups.length > 1" class="page-header p-2 text-center text-lowercase">
+    <div v-if="groups.length > 1" class="page-header text-center text-lowercase">
         <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="btn btn-outline-secondary btn-sm m-1">${ group.description[0] }</a>
     </div>
 
@@ -18,7 +18,7 @@
     <!-- Cards -->
     <div v-if="ready" v-for="group in orderedGroups" class="card my-3">
         <div :id="group.cn[0]" class="card-header">
-            <span class="text-capitalize">${ group.description[0] }</span>
+            <span class="text-capitalize font-weight-bold">${ group.description[0] }</span>
 
             <!-- card actions -->
             <div class="float-right">
@@ -48,7 +48,7 @@
                     <div class="col-10">
                         <ul class="list-unstyled row">
                             <li v-for="role in group.roles" v-if="group[role].length > 0" class="list-item col-6">
-                                ${role}<span v-if="group[role].length > 1">s</span>:
+                                <span class="font-weight-bold">${role}<span v-if="group[role].length > 1">s</span></span>:
                                 <a :href="'https://rover.redhat.com/people/profile/' + man.split(',')[0]" v-for="man in group[role]" class="comma">${man.split(',')[1]}</a>
                             </li>
                         </ul>
