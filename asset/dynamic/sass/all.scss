@@ -1,6 +1,15 @@
 @import "asset/dynamic/sass/partial/variable";
 @import "asset/dynamic/sass/partial/mixin";
 
+/* bootstrap theme http://getbootstrap.com/ */
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+/* font awesome http://fontawesome.com/ */
+@import "../../../node_modules/@fortawesome/fontawesome-free/scss/regular";
+@import "../../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
+@import "../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+
 /* CSS for Blue Jay Blueprint version #{$version}. */
 
 // *****************************************************************************

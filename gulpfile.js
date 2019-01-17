@@ -64,14 +64,15 @@ gulp.task('jquery', function() {
 
 // Bootstrap Task
 gulp.task('bootstrap', function() {
-	gulp.src('node_modules/bootstrap/dist/css/bootstrap-theme.min.*')
-		.pipe(gulp.dest(folderAsset + '/static/css/'));
 	gulp.src('node_modules/bootstrap/dist/css/bootstrap.min.*')
 		.pipe(gulp.dest(folderAsset + '/static/css/'));
-	gulp.src('node_modules/bootstrap/dist/fonts/*')
-		.pipe(gulp.dest(folderAsset + '/static/fonts/'));
 	return gulp.src('node_modules/bootstrap/dist/js/bootstrap*min.js')
 		.pipe(gulp.dest(folderAsset + '/static/js/'));
+});
+
+gulp.task('font-awesome', function() {
+	return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
+		.pipe(gulp.dest(folderAsset + '/static/webfonts/'));
 });
 
 // Vue.js
@@ -261,7 +262,7 @@ gulp.task('watch', gulp.series(['server:build', 'server:watch', 'server:spawn'],
 }));
 
 // Init - every task
-gulp.task('init', gulp.series(['sass', 'javascript', 'jquery', 'bootstrap', 'vuejs', 'vuejs-resource', 'underscore', 'favicon', 'server:build']), function(done) {
+gulp.task('init', gulp.series(['sass', 'javascript', 'jquery', 'bootstrap', 'font-awesome', 'vuejs', 'vuejs-resource', 'underscore', 'favicon', 'server:build']), function(done) {
 	done();
 });
 
