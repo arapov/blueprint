@@ -3,66 +3,110 @@
 {{define "content" -}}
 
 <div id="roster">
-
     <!-- Cloud -->
-    <div v-if="groups.length > 1" class="page-header text-center text-lowercase">
-        <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="btn btn-outline-secondary btn-sm m-1">${ group.description[0] }</a>
-    </div>
+    <!-- div v-if="groups.length > 1" class="page-header text-center text-lowercase">
+        <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="btn btn-sm btn-link">${ group.description[0] }</a>
+    </div -->
 
-    <!-- Spinner -->
-    <div v-if="!ready" class="card my-2">
-        <div class="card-header">Roster is loading...</div>
-        <div class="card-body mx-auto"><i class="fas fa-spinner fa-5x fa-spin"></i></div>
-    </div>
+    <div class="container">
+        <div class="row">
 
-    <!-- Cards -->
-    <div v-if="ready" v-for="group in orderedGroups" class="card my-3">
-        <div :id="group.cn[0]" class="card-header">
-            <span class="text-capitalize font-weight-bold">${ group.description[0] }</span>
-
-            <!-- card actions -->
-            <div class="float-right">
-                <span v-if="groups.length > 1" class="mr-2" title="Open in new window."><a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link"><i class="fas fa-external-link-alt"></i></a></span>
-                <span class="dropdown" title="Actions...">
-                    <a class="btn btn-link btn-sm dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" :href="'https://rover.redhat.com/groups/group/' + group.cn[0] ">Edit</a>
-                    </div>
-                </span>
+            <!-- navigation bar -->
+            <div class="col-2 my-3">
+                <ul class="list-unstyled">
+                    <li>dfg1</li>
+                    <li>dfg2</li>
+                    <li>dfg3</li>
+                    <li>dfg4</li>
+                </ul>
             </div>
 
-            <!-- card stats -->
-            <div class="card-stats float-right mr-4">
-                <span v-if="group.subGroup.length > 0" class="mr-1" title="Number of subgroups."><i class="fas fa-users"></i><strong>&nbsp;${ group.subGroup.length }</strong></span>
-                <span v-if="group.uniqueMember.length > 0" title="Number of people in the group."><i class="fas fa-user"></i><strong>&nbsp;${ group.uniqueMember.length }</strong></span>
-            </div>
+            <!-- content -->
+            <div class="col-10">
 
-        </div>
-
-        <div class="card-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-2">
-                        <span>TODO: links</span>
-                    </div>
-                    <div class="col-10">
-                        <ul class="list-unstyled row">
-                            <li v-for="role in group.roles" v-if="group[role].length > 0" class="list-item col-6">
-                                <span class="font-weight-bold">${role}<span v-if="group[role].length > 1">s</span></span>:
-                                <a :href="'https://rover.redhat.com/people/profile/' + man.split(',')[0]" v-for="man in group[role]" class="comma">${man.split(',')[1]}</a>
-                            </li>
-                        </ul>
-                    </div>
+                <!-- spinner -->
+                <div v-if="!ready" class="card my-3">
+                    <div class="card-header">Roster is loading...</div>
+                    <div class="card-body mx-auto"><i class="fas fa-spinner fa-5x fa-spin"></i></div>
                 </div>
+
+                <!-- cards -->
+                <div v-if="ready" v-for="group in orderedGroups" class="card my-3">
+
+                    <!-- card header -->
+                    <div class="card-header font-weight-bold py-2" :id="group.cn[0]">
+                        <span class="text-capitalize">${ group.description[0] }</span>
+
+                        <!-- card header actions -->
+                        <span class="float-right">
+                            <span v-if="groups.length > 1" class="mr-2" title="Open in new window.">
+                                <a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </span>
+                            <span class="dropdown" title="Actions...">
+                                <a class="btn btn-link btn-sm dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <span class="dropdown-menu">
+                                    <a class="dropdown-item" :href="'https://rover.redhat.com/groups/group/' + group.cn[0] ">Edit</a>
+                                </span>
+                            </span>
+                        </span>
+
+                        <!-- card header stats -->
+                        <span class="card-stats float-right mr-4">
+                            <span v-if="group.subGroup.length > 0" class="mr-1" title="Number of subgroups.">
+                                <i class="fas fa-users"></i><strong>&nbsp;${ group.subGroup.length }</strong>
+                            </span>
+                            <span v-if="group.uniqueMember.length > 0" title="Number of people in the group.">
+                                <i class="fas fa-user"></i><strong>&nbsp;${ group.uniqueMember.length }</strong>
+                            </span>
+                        </span>
+                    </div>
+                    <!-- /card header -->
+
+                    <!-- card body -->
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+
+                                <!-- card body links -->
+                                <div class="col-2">
+                                    <ul class="list-unstyled">
+                                        <li>link1</li>
+                                        <li>link2</li>
+                                        <li>link3</li>
+                                    </ul>
+                                </div>
+
+                                <!-- card body governance -->
+                                <div class="col-10">
+                                    <ul class="row list-unstyled">
+                                        <li v-for="role in group.roles" v-if="group[role].length > 0" class="list-item col-6">
+                                            <span class="font-weight-bold">
+                                                ${role}<span v-if="group[role].length > 1">s</span>
+                                            </span>:
+                                            <a :href="'https://rover.redhat.com/people/profile/' + man.split(',')[0]" v-for="man in group[role]" class="comma">${ man.split(',')[1] }</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /card body -->
+
+                    <button class="btn btn-link btn-sm">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <!-- /cards -->
             </div>
+            <!-- /content -->
+
         </div>
-
-        <button class="btn btn-link btn-sm">
-            <i class="fas fa-chevron-down"></i>
-        </button>
-
     </div>
-
 </div>
 
 <script type="text/javascript">
