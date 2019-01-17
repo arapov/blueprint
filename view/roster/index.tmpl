@@ -13,12 +13,9 @@
 
             <!-- navigation bar -->
             <div class="col-2 my-3">
-                <ul class="list-unstyled">
-                    <li>dfg1</li>
-                    <li>dfg2</li>
-                    <li>dfg3</li>
-                    <li>dfg4</li>
-                </ul>
+                <div id="toc" class="list-group sticky">
+                    <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="list-group-item list-group-item-action">${ group.description[0] }</a>
+                </div>
             </div>
 
             <!-- content -->
