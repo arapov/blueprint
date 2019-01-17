@@ -66,7 +66,7 @@ gulp.task('jquery', function() {
 gulp.task('bootstrap', function() {
 	gulp.src('node_modules/bootstrap/dist/css/bootstrap.min.*')
 		.pipe(gulp.dest(folderAsset + '/static/css/'));
-	return gulp.src('node_modules/bootstrap/dist/js/bootstrap*min.js')
+	return gulp.src('node_modules/bootstrap/dist/js/bootstrap*min.*')
 		.pipe(gulp.dest(folderAsset + '/static/js/'));
 });
 
