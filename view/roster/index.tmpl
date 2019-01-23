@@ -107,8 +107,6 @@
 </div>
 
 <script type="text/javascript">
-Vue.prototype.$http = axios;
-
 let roster = new Vue({
     el: '#roster',
     delimiters: ['${','}'],
@@ -128,7 +126,7 @@ let roster = new Vue({
         },
     },
     async mounted() {
-        await this.$http
+        await axios
             .get('/api/v1/roster/groups/' + {{.group}} )
             .then(response => {
                 this.groups = response.data.data;
