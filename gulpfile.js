@@ -81,9 +81,9 @@ gulp.task('vuejs', function() {
 		.pipe(gulp.dest(folderAsset + '/static/js/'));
 });
 
-// Vue.js-resource
-gulp.task('vuejs-resource', function() {
-	return gulp.src('node_modules/vue-resource/dist/vue-resource.min.js')
+// axios
+gulp.task('axios', function() {
+	return gulp.src('node_modules/axios/dist/axios.min.*')
 		.pipe(gulp.dest(folderAsset + '/static/js/'));
 });
 
@@ -262,7 +262,7 @@ gulp.task('watch', gulp.series(['server:build', 'server:watch', 'server:spawn'],
 }));
 
 // Init - every task
-gulp.task('init', gulp.series(['sass', 'javascript', 'jquery', 'bootstrap', 'font-awesome', 'vuejs', 'vuejs-resource', 'underscore', 'favicon', 'server:build']), function(done) {
+gulp.task('init', gulp.series(['sass', 'javascript', 'jquery', 'bootstrap', 'font-awesome', 'vuejs', 'axios', 'underscore', 'favicon', 'server:build']), function(done) {
 	done();
 });
 

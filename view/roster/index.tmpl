@@ -107,6 +107,8 @@
 </div>
 
 <script type="text/javascript">
+Vue.prototype.$http = axios;
+
 let roster = new Vue({
     el: '#roster',
     delimiters: ['${','}'],
@@ -122,20 +124,24 @@ let roster = new Vue({
     },
     computed: {
         orderedGroups() {
-            return _.sortBy(this.groups, 'cn')
+            return _.sortBy(this.groups, 'cn');
         },
     },
     async mounted() {
-        await this.$http.get('/api/v1/roster/groups/' + {{.group}} ).then(response => {
-            this.groups = response.body.data;
-        }, response => {
-            this.groups = [{
-                    "cn": [response.body.errors[0].title],
-                    "description": ["Error: " + response.body.errors[0].title],
-                    subGroup: [],
-                    uniqueMember: [],
-                }];
-        });
+        await this.$http
+            .get('/api/v1/roster/groups/' + {{.group}} )
+            .then(response => {
+                this.groups = response.data.data;
+            })
+            .catch(error => {
+                console.log(error)
+                this.groups = [{
+                        "cn": [error.response.data.errors[0].title],
+                        "description": ["Error: " + error.response.data.errors[0].title],
+                        subGroup: [],
+                        uniqueMember: [],
+                    }];
+            });
         this.ready = true;
     },
 });
