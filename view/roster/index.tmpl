@@ -86,7 +86,7 @@
                     <!-- /card header -->
 
                     <!-- card body -->
-                    <div class="card-body">
+                    <div class="card-body pb-0">
                         <div class="container">
                             <div class="row">
 
@@ -123,8 +123,12 @@
                     </div>
                     <!-- /card body -->
 
-                    <button class="btn btn-link btn-sm">
-                        <i class="fas fa-chevron-down"></i>
+                    <!-- card expandable details -->
+                    <group-details :cn="group.cn[0]" v-if="isActive(group.cn[0])"></group-details>
+                    <!-- /card expandable details -->
+
+                    <button class="btn btn-link btn-sm" v-on:click="alternate(group.cn[0])">
+                        <i :class="(isActive(group.cn[0]))?'fas fa-chevron-up':'fas fa-chevron-down'"></i>
                     </button>
                 </div>
                 <!-- /cards -->
@@ -135,7 +139,17 @@
     </div>
 </div>
 
+<template id="group-details">
+    <p>${ cn } details...</p>
+</template>
+
 <script type="text/javascript">
+var GroupDetails = {
+    template: '#group-details',
+    delimiters: ['${','}'],
+    props: ['cn'],
+};
+
 let roster = new Vue({
     el: '#roster',
     delimiters: ['${','}'],
@@ -147,6 +161,7 @@ let roster = new Vue({
                 uniqueMember: [],
             },
         ],
+        active: [],
         ready: false,
     },
     computed: {
@@ -170,6 +185,21 @@ let roster = new Vue({
                     }];
             });
         this.ready = true;
+    },
+    methods: {
+        alternate(cn) {
+            let index = this.active.indexOf(cn);
+            if (index !== -1)
+                this.active.splice(index, 1);
+            else
+                this.active.push(cn);
+        },
+        isActive(cn) {
+            return this.active.includes(cn);
+        },
+    },
+    components: {
+        'group-details': GroupDetails,
     },
 });
 </script>
