@@ -10,7 +10,11 @@
             <!-- navigation bar -->
             <div class="col-2 my-3">
                 <div id="toc" class="list-group sticky">
-                    <a v-for="group in orderedGroups" :href="'#' + group.cn[0]" class="list-group-item list-group-item-action p-1">${ group.description[0] }</a>
+                    <a class="list-group-item list-group-item-action p-1"
+                        v-for="group in orderedGroups" 
+                        :href="'#' + group.cn[0]">
+                        ${ group.description[0] }
+                    </a>
                 </div>
             </div>
 
@@ -18,42 +22,59 @@
             <div class="col-10">
 
                 <!-- spinner -->
-                <div v-if="!ready" class="card my-3">
+                <div class="card my-3"
+                    v-if="!ready" >
                     <div class="card-header">Roster is loading...</div>
-                    <div class="card-body mx-auto"><i class="fas fa-spinner fa-5x fa-spin"></i></div>
+                    <div class="card-body mx-auto">
+                        <i class="fas fa-spinner fa-5x fa-spin"></i>
+                    </div>
                 </div>
 
                 <!-- cards -->
-                <div v-if="ready" v-for="group in orderedGroups" class="card my-3">
+                <div class="card my-3"
+                    v-if="ready" v-for="group in orderedGroups">
 
                     <!-- card header -->
-                    <div class="card-header font-weight-bold py-2" :id="group.cn[0]">
-                        <span class="text-capitalize">${ group.description[0] }</span>
+                    <div :id="group.cn[0]" class="card-header font-weight-bold py-2">
+                        <span class="text-capitalize">
+                            ${ group.description[0] }
+                        </span>
 
                         <!-- card header actions -->
                         <span class="float-right">
-                            <span v-if="groups.length > 1" class="mr-2" title="Open in new window.">
-                                <a :href="'/roster/' + group.cn[0] " target="_blank" class="card-link">
+                            <span class="mr-2" title="Open in new window."
+                                v-if="groups.length > 1">
+                                <a class="card-link" target="_blank"
+                                    :href="'/roster/' + group.cn[0]">
                                     <i class="fas fa-external-link-alt"></i>
                                 </a>
                             </span>
                             <span class="dropdown" title="Actions...">
-                                <a class="btn btn-link btn-sm dropdown-toggle p-0" href="#" role="button" data-toggle="dropdown">
+                                <a class="btn btn-link btn-sm dropdown-toggle p-0"
+                                    href="#" role="button"
+                                    data-toggle="dropdown">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
                                 <span class="dropdown-menu">
-                                    <a class="dropdown-item" :href="'https://rover.redhat.com/groups/group/' + group.cn[0] ">Edit</a>
+                                    <a class="dropdown-item"
+                                        :href="'https://rover.redhat.com/groups/group/' + group.cn[0]">
+                                        Edit
+                                    </a>
                                 </span>
                             </span>
                         </span>
 
                         <!-- card header stats -->
                         <span class="card-stats float-right mr-4">
-                            <span v-if="group.subGroup.length > 0" class="mr-1" title="Number of subgroups.">
-                                <i class="fas fa-users"></i><strong>&nbsp;${ group.subGroup.length }</strong>
+                            <span class="mr-1" title="Number of subgroups."
+                                v-if="group.subGroup.length > 0">
+                                <i class="fas fa-users"></i>
+                                <strong>${ group.subGroup.length }</strong>
                             </span>
-                            <span v-if="group.uniqueMember.length > 0" title="Number of people in the group.">
-                                <i class="fas fa-user"></i><strong>&nbsp;${ group.uniqueMember.length }</strong>
+                            <span title="Number of people in the group."
+                                v-if="group.uniqueMember.length > 0">
+                                <i class="fas fa-user"></i>
+                                <strong>${ group.uniqueMember.length }</strong>
                             </span>
                         </span>
                     </div>
@@ -76,11 +97,16 @@
                                 <!-- card body governance -->
                                 <div class="col-10">
                                     <ul class="row list-unstyled">
-                                        <li v-for="role in group.roles" v-if="group[role].length > 0" class="list-item col-6">
+                                        <li class="list-item col-6"
+                                            v-for="role in group.roles"
+                                            v-if="group[role].length > 0">
                                             <span class="font-weight-bold">
                                                 ${role}<span v-if="group[role].length > 1">s</span>
                                             </span>:
-                                            <a :href="'https://rover.redhat.com/people/profile/' + man.split(',')[0]" v-for="man in group[role]" class="comma">${ man.split(',')[1] }</a>
+                                            <a class="comma"
+                                                :href="'https://rover.redhat.com/people/profile/' + man.split(',')[0]"
+                                                v-for="man in group[role]">
+                                                ${ man.split(',')[1] }</a>
                                         </li>
                                     </ul>
                                 </div>
