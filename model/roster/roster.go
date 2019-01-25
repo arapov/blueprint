@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -73,7 +74,7 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 			*filter = fmt.Sprintf("(&(objectClass=rhatRoverGroup)(!cn=*%s*)(|%s))", subGroupPrefix, groupPrefix)
 		}
 	}
-	ldapGroups, err := ldapc.Query(*filter, []string{"cn", "description", "uniqueMember"})
+	ldapGroups, err := ldapc.Query(*filter, []string{"cn", "description", "rhatGroupNotes", "uniqueMember"})
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -89,23 +90,29 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 		for _, role := range roles {
 			ldapGroup[role] = []string{}
 		}
+		ldapGroup["links"] = []string{}
 		ldapGroup["roles"] = roles
 
 		// Get possible sub-groups, and merge sub-group info and its members into parent group
 		if subGroupPrefix != "" {
 			filter := fmt.Sprintf("(&(objectClass=rhatRoverGroup)(cn=%s%s*))", ldapGroup["cn"][0], subGroupPrefix)
-			ldapSubGroups, _ := ldapc.Query(filter, []string{"cn", "description", "uniqueMember"})
+			ldapSubGroups, _ := ldapc.Query(filter, []string{"cn", "description", "rhatGroupNotes", "uniqueMember"})
 			for _, ldapSubGroup := range ldapSubGroups {
 				// Extending Group data with the information about subGroups
 				subGroup := fmt.Sprintf("%s,%s", ldapSubGroup["cn"][0], ldapSubGroup["description"][0])
 				ldapGroup["subGroup"] = append(ldapGroup["subGroup"], subGroup)
 
-				// Merging subGroup members with group members
+				ldapGroup["rhatGroupNotes"] = append(ldapGroup["rhatGroupNotes"], ldapSubGroup["rhatGroupNotes"]...)
 				uniqueMembers = append(uniqueMembers, ldapSubGroup["uniqueMember"]...)
 			}
 			removeDuplicates(&uniqueMembers)
 			ldapGroup["uniqueMember"] = uniqueMembers
 		}
+
+		for _, note := range ldapGroup["rhatGroupNotes"] {
+			ldapGroup["links"] = append(ldapGroup["links"], decodeNote(note)...)
+		}
+		delete(ldapGroup, "rhatGroupNotes")
 
 		// Extend Group with the special roles and members
 		for _, uniqueMember := range uniqueMembers {
@@ -133,6 +140,25 @@ func contains(slice []string, item string) bool {
 
 	_, ok := set[item]
 	return ok
+}
+
+func decodeNote(note string) []string {
+	var result []string
+
+	// accepts:
+	// pile:key=value or pile:key="value value"
+	// can be separated by , or space
+	re, _ := regexp.Compile(`pile:(\w*=[\w:/@.-]+|\w*="[\w\s!,:/@.-]+")`)
+	// TODO: take care of error here
+	pile := re.FindAllStringSubmatch(note, -1)
+	// TODO: code below is fragile, very fragile
+	for i := range pile {
+		kv := strings.Split(pile[i][1], "=")
+		note := fmt.Sprintf("%s,%s", strings.Title(kv[0]), strings.Trim(kv[1], "\""))
+		result = append(result, note)
+	}
+
+	return result
 }
 
 func removeDuplicates(xs *[]string) {

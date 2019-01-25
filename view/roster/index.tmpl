@@ -93,9 +93,11 @@
                                 <!-- card body links -->
                                 <div class="col-2">
                                     <ul class="list-unstyled">
-                                        <li>link1</li>
-                                        <li>link2</li>
-                                        <li>link3</li>
+                                        <li v-for="link in group.links">
+                                            <a :href="link.split(',')[1]">
+                                                ${ link.split(',')[0] }
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
 
