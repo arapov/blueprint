@@ -97,7 +97,8 @@ func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]
 			ldapSubGroups, _ := ldapc.Query(filter, []string{"cn", "description", "uniqueMember"})
 			for _, ldapSubGroup := range ldapSubGroups {
 				// Extending Group data with the information about subGroups
-				ldapGroup["subGroup"] = append(ldapGroup["subGroup"], ldapSubGroup["cn"][0])
+				subGroup := fmt.Sprintf("%s,%s", ldapSubGroup["cn"][0], ldapSubGroup["description"][0])
+				ldapGroup["subGroup"] = append(ldapGroup["subGroup"], subGroup)
 
 				// Merging subGroup members with group members
 				uniqueMembers = append(uniqueMembers, ldapSubGroup["uniqueMember"]...)

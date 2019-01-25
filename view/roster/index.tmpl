@@ -60,6 +60,11 @@
                                         :href="'https://rover.redhat.com/groups/group/' + group.cn[0]">
                                         Edit
                                     </a>
+                                    <a class="dropdown-item"
+                                        v-for="subGroup in group.subGroup"
+                                        :href="'https://rover.redhat.com/groups/group/' + subGroup.split(',')[0]">
+                                        Edit ${ subGroup.split(',')[1] }
+                                    </a>
                                 </span>
                             </span>
                         </span>
