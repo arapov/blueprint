@@ -8,7 +8,7 @@
         <div class="row">
 
             <!-- navigation bar -->
-            <div class="col-2 my-3">
+            <div class="col-2 my-3" v-if="groups.length > 1">
                 <div id="toc" class="list-group sticky">
                     <a class="list-group-item list-group-item-action p-1"
                         v-for="group in orderedGroups" 
@@ -19,7 +19,7 @@
             </div>
 
             <!-- content -->
-            <div class="col-10">
+            <div :class="(groups.length > 1)?'col-10':'col-12'">
 
                 <!-- spinner -->
                 <div class="card my-3"
