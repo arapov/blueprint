@@ -50,7 +50,6 @@
 
 div#toc .list-group-item {
 	border-color: rgb(255, 255, 255);
-	border-left-style: solid;
 	background-color: rgb(255,255,255);
 }
 
@@ -65,21 +64,21 @@ div#toc .list-group-item.active {
 	color:  rgb(0, 123, 255);
 }
 
-// *****************************************************************************
-// Helpers
-// *****************************************************************************
-
-.card-body .comma + .comma:before {
-	content: ",";
-	color: black;
+.sticky {
+	position: sticky;
+	top: 10px;
 }
 
-.card-body a.comma:hover {
+// *****************************************************************************
+// cards
+// *****************************************************************************
+
+.card a:hover {
 	color: red;
 	text-decoration: none;
 }
 
-.sticky {
-	position: sticky;
-	top: 10px;
+.card-body .comma + .comma:before {
+	content: ",";
+	color: black;
 }
