@@ -124,7 +124,11 @@
                     <!-- /card body -->
 
                     <!-- card expandable details -->
-                    <group-details :cn="group.cn[0]" v-if="isActive(group.cn[0])"></group-details>
+                    <group-details
+                        v-if="isActive(group.cn[0])"
+                        :cn="group.cn[0]"
+                        :uniquemember="group.uniqueMember">
+                    </group-details>
                     <!-- /card expandable details -->
 
                     <button class="btn btn-link btn-sm" v-on:click="alternate(group.cn[0])">
@@ -140,14 +144,40 @@
 </div>
 
 <template id="group-details">
-    <p>${ cn } details...</p>
+<table class="table">
+    <tr v-for="uid in people">
+        <td>${ uid.cn[0] }</td>
+        <td>${ uid.title[0] }</td>
+    </tr>
+</table>
 </template>
 
 <script type="text/javascript">
 var GroupDetails = {
     template: '#group-details',
     delimiters: ['${','}'],
-    props: ['cn'],
+    props: ['cn', 'uniquemember'],
+    data: function() {
+        return {
+            people: [],
+        };
+    },
+    computed: {
+        UIDs() {
+            let uids = "";
+            this.uniquemember.forEach(uid => {
+                uids += uid.split(',')[0].substring(4) + ",";
+            });
+            return uids.slice(0,-1);
+        },
+    },
+    async mounted() {
+        await axios
+            .get('/api/v1/roster/people/' + this.UIDs)
+            .then(response => {
+                this.people = response.data.data;
+            });
+    },
 };
 
 let roster = new Vue({

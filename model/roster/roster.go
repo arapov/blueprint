@@ -26,7 +26,7 @@ func GetPeople(ldapc Connection, people string, filter *string) ([]map[string][]
 		*filter = fmt.Sprintf("(&(objectClass=rhatPerson)(|%s))", uids)
 	}
 
-	ldapPeople, err := ldapc.Query(*filter, []string{"uid", "cn", "memberOf"})
+	ldapPeople, err := ldapc.Query(*filter, []string{"uid", "cn", "title"})
 	if err != nil {
 		log.Println(err)
 		return nil, err
