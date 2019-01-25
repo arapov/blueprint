@@ -19,6 +19,8 @@ type response struct {
 	Meta   map[string]string     `json:"meta"`
 }
 
+type modelFn func(roster.Connection, string, *string) ([]map[string][]string, error)
+
 // Load the routes.
 func Load() {
 	router.Get("/roster", Index)
@@ -27,20 +29,26 @@ func Load() {
 
 	router.Get("/api/v1/roster/groups", apiGetGroups)
 	router.Get("/api/v1/roster/groups/", apiGetGroups)
-	router.Get("/api/v1/roster/groups/:group", apiGetGroups)
+	router.Get("/api/v1/roster/groups/:id", apiGetGroups)
+	router.Get("/api/v1/roster/groups/:id/", apiGetGroups)
+
+	router.Get("/api/v1/roster/people", apiGetPeople)
+	router.Get("/api/v1/roster/people/", apiGetPeople)
+	router.Get("/api/v1/roster/people/:id", apiGetPeople)
+	router.Get("/api/v1/roster/people/:id/", apiGetPeople)
 }
 
-func apiGetGroups(w http.ResponseWriter, r *http.Request) {
+func apiGet(w http.ResponseWriter, r *http.Request, apiGetFunc modelFn) {
 	w.Header().Set("Content-Type", "application/vnd.api+json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	c := flight.Context(w, r)
 	start := time.Now()
 
-	var filter string
 	var res response
+	var filter string
 	var data []map[string][]string
 
-	data, err := roster.GetGroups(c.LDAP, c.Param("group"), &filter)
+	data, err := apiGetFunc(c.LDAP, c.Param("id"), &filter)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadGateway)
@@ -64,6 +72,14 @@ out:
 	}
 
 	w.Write(jsonRes)
+}
+
+func apiGetPeople(w http.ResponseWriter, r *http.Request) {
+	apiGet(w, r, roster.GetPeople)
+}
+
+func apiGetGroups(w http.ResponseWriter, r *http.Request) {
+	apiGet(w, r, roster.GetGroups)
 }
 
 // Index displays the page.

@@ -13,6 +13,28 @@ type Connection interface {
 	Query(filter string, attributes []string) ([]map[string][]string, error)
 }
 
+func GetPeople(ldapc Connection, people string, filter *string) ([]map[string][]string, error) {
+	// TODO: Do the real work
+
+	*filter = fmt.Sprintf("(&(objectClass=rhatPerson))")
+	// Amend the default query in case we have people defined
+	var uids string
+	if people != "" {
+		for _, manUID := range strings.Split(people, ",") {
+			uids += fmt.Sprintf("(uid=%s)", manUID)
+		}
+		*filter = fmt.Sprintf("(&(objectClass=rhatPerson)(|%s))", uids)
+	}
+
+	ldapPeople, err := ldapc.Query(*filter, []string{"uid", "cn", "memberOf"})
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return ldapPeople, err
+}
+
 func GetGroups(ldapc Connection, groups string, filter *string) ([]map[string][]string, error) {
 	// TODO: Find a better, generic place
 	groupPrefix := os.Getenv("LDAP_GROUPS_PREFIX")
