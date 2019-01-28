@@ -215,6 +215,10 @@ let roster = new Vue({
                     }];
             });
         this.ready = true;
+
+        // Expand group details, when specified.
+        if ({{.group}} != "")
+            this.alternate({{.group}});
     },
     methods: {
         alternate(cn) {
