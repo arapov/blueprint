@@ -6,7 +6,7 @@ import (
 
 	"github.com/microcosm-cc/bluemonday"
 
-	blackfriday "gopkg.in/russross/blackfriday.v2"
+	"github.com/russross/blackfriday"
 )
 
 // Tree interface describes the interfaces that must be implemented
